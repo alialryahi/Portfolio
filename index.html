@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ali Alreyahi — Backend & API Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060610;
+  --surface:#0e0e1c;
+  --surface2:#13131f;
+  --border:#ffffff14;
+  --border2:#ffffff22;
+  --text:#f0f0fa;
+  --muted:#6b6b85;
+  --soft:#a0a0bc;
+  --cyan:#67e8f9;
+  --violet:#a78bfa;
+  --emerald:#34d399;
+  --amber:#fbbf24;
+  --rose:#fb7185;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Cabinet Grotesk',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:1.2rem 3.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .4s,border-color .4s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{background:#060610ee;border-color:var(--border)}
+.logo{
+  font-family:'Clash Display',sans-serif;
+  font-size:1.15rem;font-weight:700;letter-spacing:.02em;
+  color:var(--text);text-decoration:none;
+}
+.logo em{font-style:normal;color:var(--cyan)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;font-size:.82rem;
+  font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-badge{
+  font-size:.75rem;font-weight:700;letter-spacing:.06em;
+  padding:.4rem 1rem;border-radius:999px;
+  border:1px solid var(--cyan);color:var(--cyan);
+  text-decoration:none;transition:background .2s;
+}
+.nav-badge:hover{background:var(--cyan)18}
+
+/* ── SECTIONS ── */
+section{position:relative;z-index:1}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:9rem 2rem 5rem;
+}
+.hero-chip{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:999px;padding:.45rem 1.1rem;
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;
+  color:var(--cyan);letter-spacing:.12em;margin-bottom:2rem;
+  opacity:0;animation:up .7s .2s forwards;
+}
+.chip-dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);animation:pulse 1.8s ease-in-out infinite}
+.hero-name{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(3rem,9vw,7.5rem);font-weight:700;
+  line-height:.98;letter-spacing:-.03em;
+  margin-bottom:.6rem;
+  opacity:0;animation:up .8s .4s forwards;
+}
+.hero-name .last{
+  display:block;
+  -webkit-text-stroke:1.5px #ffffff30;
+  color:transparent;
+}
+.hero-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(.85rem,2vw,1.05rem);
+  color:var(--cyan);letter-spacing:.1em;
+  margin-bottom:1.6rem;
+  opacity:0;animation:up .8s .6s forwards;
+}
+.hero-role span{color:var(--muted)}
+.hero-bio{
+  max-width:520px;font-size:1rem;color:var(--soft);
+  line-height:1.8;font-weight:500;
+  margin-bottom:2.8rem;
+  opacity:0;animation:up .8s .8s forwards;
+}
+.hero-actions{
+  display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center;
+  opacity:0;animation:up .8s 1s forwards;
+}
+.btn-solid{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.78rem 1.9rem;border-radius:999px;
+  background:var(--cyan);color:#060610;
+  font-weight:800;font-size:.88rem;letter-spacing:.04em;text-decoration:none;
+  transition:transform .2s,opacity .2s;
+}
+.btn-solid:hover{transform:translateY(-2px);opacity:.88}
+.btn-outline{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.78rem 1.9rem;border-radius:999px;
+  border:1px solid var(--border2);color:var(--text);
+  font-weight:700;font-size:.88rem;letter-spacing:.04em;text-decoration:none;
+  background:transparent;transition:background .2s,transform .2s;
+}
+.btn-outline:hover{background:#ffffff0a;transform:translateY(-2px)}
+.hero-scroll{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;
+  opacity:0;animation:up .8s 1.3s forwards;
+}
+.scroll-bar{width:1px;height:40px;background:linear-gradient(to bottom,var(--muted),transparent);animation:scrollpulse 1.8s ease-in-out infinite}
+
+/* ── SHARED ── */
+.wrap{max-width:1080px;margin:0 auto}
+.section-eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  letter-spacing:.18em;color:var(--cyan);text-transform:uppercase;margin-bottom:.6rem;
+}
+.section-heading{font-family:'Clash Display',sans-serif;font-size:2.2rem;font-weight:700;letter-spacing:-.01em}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
+.reveal.in{opacity:1;transform:none}
+
+/* ── EDUCATION ── */
+#education{padding:6rem 3.5rem}
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2.5rem}
+.edu-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:18px;padding:1.8rem 2rem;
+  transition:border-color .2s,transform .2s;
+}
+.edu-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+.edu-card.primary{border-color:#67e8f930;background:linear-gradient(135deg,#67e8f908,#060610)}
+.edu-flag{
+  display:inline-block;font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:.25rem .75rem;border-radius:999px;margin-bottom:1rem;
+}
+.flag-grad{background:#67e8f914;color:var(--cyan);border:1px solid #67e8f930}
+.flag-cert{background:#a78bfa14;color:var(--violet);border:1px solid #a78bfa30}
+.edu-degree{font-family:'Clash Display',sans-serif;font-size:1.25rem;font-weight:700;margin-bottom:.35rem}
+.edu-uni{font-size:.9rem;color:var(--soft);margin-bottom:.2rem;font-weight:500}
+.edu-year{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.08em}
+.edu-gpa{
+  display:inline-flex;align-items:center;gap:.4rem;margin-top:.9rem;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;
+  color:var(--emerald);
+}
+
+/* ── SKILLS ── */
+#skills{padding:5rem 3.5rem}
+.skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2.5rem}
+.skill-group{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:18px;padding:1.8rem;
+  transition:border-color .2s,transform .2s;
+}
+.skill-group:hover{border-color:var(--border2);transform:translateY(-2px)}
+.skill-group-title{
+  font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:1.1rem;display:flex;align-items:center;gap:.5rem;
+}
+.skill-group-title::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%}
+.sg-backend .skill-group-title::before{background:var(--cyan)}
+.sg-langs .skill-group-title::before{background:var(--violet)}
+.sg-db .skill-group-title::before{background:var(--emerald)}
+.sg-tools .skill-group-title::before{background:var(--amber)}
+.skill-pills{display:flex;flex-wrap:wrap;gap:.45rem}
+.pill{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  padding:.28rem .8rem;border-radius:999px;
+  border:1px solid var(--border2);color:var(--soft);
+  background:var(--surface);letter-spacing:.04em;
+  transition:border-color .2s,color .2s;
+}
+.pill:hover{border-color:#67e8f940;color:var(--cyan)}
+
+/* ── EXPERIENCE ── */
+#experience{padding:5rem 3.5rem}
+.timeline{margin-top:2.5rem;position:relative;padding-left:2rem}
+.timeline::before{
+  content:'';position:absolute;left:0;top:.5rem;bottom:.5rem;
+  width:1px;background:linear-gradient(to bottom,var(--cyan),var(--violet),transparent);
+}
+.tl-item{position:relative;margin-bottom:2.8rem;padding-left:1.8rem}
+.tl-item:last-child{margin-bottom:0}
+.tl-dot{
+  position:absolute;left:-2.4rem;top:.35rem;
+  width:10px;height:10px;border-radius:50%;
+  border:2px solid var(--cyan);background:var(--bg);
+}
+.tl-item.alt .tl-dot{border-color:var(--violet)}
+.tl-period{
+  font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.12em;
+  color:var(--muted);text-transform:uppercase;margin-bottom:.4rem;
+}
+.tl-role{font-family:'Clash Display',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:.15rem}
+.tl-company{font-size:.9rem;color:var(--cyan);font-weight:700;margin-bottom:.7rem}
+.tl-item.alt .tl-company{color:var(--violet)}
+.tl-desc{font-size:.9rem;color:var(--soft);line-height:1.8;font-weight:500}
+.tl-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
+
+/* ── PROJECTS ── */
+#projects{padding:5rem 3.5rem}
+.projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2.5rem}
+.proj-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:18px;padding:1.8rem 2rem;
+  position:relative;overflow:hidden;
+  transition:border-color .2s,transform .25s;
+}
+.proj-card:hover{border-color:var(--border2);transform:translateY(-4px)}
+.proj-card.wide{grid-column:span 2}
+.proj-card::after{
+  content:'';position:absolute;inset:0;opacity:0;
+  background:radial-gradient(500px at var(--mx,50%) var(--my,50%),#67e8f90c,transparent 60%);
+  transition:opacity .3s;pointer-events:none;
+}
+.proj-card:hover::after{opacity:1}
+.proj-type{
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.14em;
+  text-transform:uppercase;margin-bottom:1rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.proj-type.uni{color:var(--violet)}
+.proj-type.intern{color:var(--emerald)}
+.proj-type-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.proj-title{font-family:'Clash Display',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:.5rem;letter-spacing:-.01em}
+.proj-desc{font-size:.87rem;color:var(--soft);line-height:1.8;font-weight:500}
+.proj-stack{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+.proj-links{display:flex;gap:.9rem;flex-wrap:wrap;align-items:center;margin-top:1.2rem}
+.proj-link{
+  display:inline-flex;align-items:center;gap:.35rem;
+  font-size:.8rem;font-weight:700;letter-spacing:.05em;
+  color:var(--cyan);text-decoration:none;
+}
+.proj-link:hover{text-decoration:underline;text-underline-offset:3px}
+.proj-link-pill{
+  display:inline-flex;align-items:center;gap:.35rem;
+  font-size:.75rem;font-weight:700;letter-spacing:.05em;
+  color:var(--cyan);text-decoration:none;
+  background:#ffffff08;border:1px solid #67e8f930;
+  padding:.32rem .9rem;border-radius:999px;
+  transition:background .2s,border-color .2s;
+}
+.proj-link-pill:hover{background:#67e8f910;border-color:#67e8f950}
+
+/* ── ABOUT / CLOSING ── */
+#about{padding:6rem 3.5rem}
+.about-inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;
+}
+.about-text p{color:var(--soft);line-height:1.9;font-size:.97rem;font-weight:500;margin-bottom:1rem}
+.about-text p:last-child{margin-bottom:0}
+.about-facts{display:flex;flex-direction:column;gap:1rem}
+.fact{
+  background:var(--surface2);border:1px solid var(--border);border-radius:14px;
+  padding:1.1rem 1.4rem;display:flex;align-items:center;gap:1rem;
+  transition:border-color .2s;
+}
+.fact:hover{border-color:var(--border2)}
+.fact-icon{font-size:1.3rem;width:36px;text-align:center;flex-shrink:0}
+.fact-label{font-size:.78rem;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;margin-bottom:.1rem}
+.fact-val{font-size:.95rem;font-weight:700;color:var(--text)}
+
+/* ── CONTACT ── */
+#contact{padding:7rem 3.5rem}
+.contact-box{
+  background:var(--surface2);border:1px solid var(--border);border-radius:24px;
+  padding:4rem;text-align:center;
+  background:linear-gradient(135deg,#13131f,#0e0e1c);
+}
+.contact-title{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(2rem,5vw,3.6rem);font-weight:700;
+  letter-spacing:-.02em;line-height:1.1;margin-bottom:1.2rem;
+}
+.contact-title .hi{color:var(--cyan)}
+.contact-sub{color:var(--soft);font-size:.97rem;line-height:1.8;max-width:460px;margin:0 auto 2.5rem;font-weight:500}
+.contact-links{display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border);
+  padding:1.8rem 3.5rem;position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:space-between;
+  color:var(--muted);font-size:.78rem;font-family:'JetBrains Mono',monospace;
+  letter-spacing:.05em;
+}
+.footer-right{display:flex;gap:1.5rem}
+.footer-right a{color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-right a:hover{color:var(--text)}
+
+/* ── KEYFRAMES ── */
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes scrollpulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:780px){
+  nav{padding:1.1rem 1.5rem}
+  .nav-links{display:none}
+  #education,#skills,#experience,#projects,#about,#contact{padding:4rem 1.5rem}
+  .edu-grid,.skills-layout,.projects-grid,.about-inner{grid-template-columns:1fr}
+  .proj-card.wide{grid-column:span 1}
+  footer{flex-direction:column;gap:.8rem;padding:1.5rem;text-align:center}
+}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="logo" href="#">Ali<em>.dev</em></a>
+  <ul class="nav-links">
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+  </ul>
+  <a class="nav-badge" href="#contact">Contact</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-chip">
+    <span class="chip-dot"></span>
+    Available for opportunities
+  </div>
+  <h1 class="hero-name">
+    Ali
+    <span class="last">Alreyahi</span>
+  </h1>
+  <p class="hero-role"><span> </span>Backend & API Engineer · Systems Engineer<span> </span></p>
+  <p class="hero-bio">
+    Computer Engineering student at the University of Jordan, specializing in backend systems and API architecture. Built a production-style multi-service backend system with authentication, audit logging, and full request tracing. Strong interest in system design, APIs, and how real systems operate end-to-end.
+  </p>
+  <div class="hero-actions">
+    <a href="#projects" class="btn-solid">
+      View My Work
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#060610" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="#contact" class="btn-outline">Get in Touch</a>
+    <a href="Ali%20%20Al-Ryahi%20CV(1).pdf" class="btn-outline" download>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Download CV
+    </a>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-bar"></div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="section-eyebrow">Where I studied</p>
+      <h2 class="section-heading">Education</h2>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card primary reveal">
+        <span class="edu-flag flag-grad">BSc Degree</span>
+        <div class="edu-degree">Computer Engineering</div>
+        <div class="edu-uni">University of Jordan</div>
+        <div class="edu-year">Expected Graduation: June 2026</div>
+      </div>
+      <div class="edu-card reveal">
+        <span class="edu-flag flag-cert">Focus Areas</span>
+        <div class="edu-degree">Core Coursework</div>
+        <div class="edu-uni" style="color:var(--soft);font-size:.85rem;margin-top:.5rem;line-height:1.8">
+          Software Engineering · Database Systems · Computer Networks · Operating Systems · System Design
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="section-eyebrow">What I work with</p>
+      <h2 class="section-heading">Tech Stack</h2>
+    </div>
+    <div class="skills-layout">
+      <div class="skill-group sg-backend reveal">
+        <div class="skill-group-title">Backend & APIs</div>
+        <div class="skill-pills">
+          <span class="pill">Node.js</span><span class="pill">Express</span><span class="pill">REST APIs</span>
+          <span class="pill">JWT</span><span class="pill">API Design</span>
+          <span class="pill">System Design</span>
+        </div>
+      </div>
+      <div class="skill-group sg-langs reveal">
+        <div class="skill-group-title">Languages</div>
+        <div class="skill-pills">
+          <span class="pill">Java</span><span class="pill">C++</span><span class="pill">C</span>
+          <span class="pill">Python</span><span class="pill">JavaScript</span><span class="pill">Assembly</span>
+          <span class="pill">SQL</span>
+        </div>
+      </div>
+      <div class="skill-group sg-db reveal">
+        <div class="skill-group-title">Databases & Systems</div>
+        <div class="skill-pills">
+          <span class="pill">SQL Server</span><span class="pill">MySQL</span><span class="pill">Database Design</span>
+          <span class="pill">Linux</span><span class="pill">Debugging</span>
+        </div>
+      </div>
+      <!-- CHANGED: added Elasticsearch and Kibana to Tools group -->
+      <div class="skill-group sg-tools reveal">
+        <div class="skill-group-title">Tools & DevOps</div>
+        <div class="skill-pills">
+          <span class="pill">Postman</span><span class="pill">Git</span><span class="pill">IIS</span>
+          <span class="pill">SSMS</span><span class="pill">PowerShell</span>
+          <span class="pill">Elasticsearch</span><span class="pill">Kibana</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="section-eyebrow">Where I've worked</p>
+      <h2 class="section-heading">Experience</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Mar 2026 – May 2026</div>
+        <div class="tl-role">Backend & Systems Intern</div>
+        <div class="tl-company">Orange Jordan — Digital Operations</div>
+        <div class="tl-desc">
+          Worked on backend and system-level tasks in an enterprise environment. Performed Linux operations, IIS hosting setup, API testing using Postman, system debugging, scripting, and database-related tasks. Gained hands-on exposure to real infrastructure, middleware concepts, and service-based architectures.
+        </div>
+        <div class="tl-tags">
+          <span class="pill">Linux</span><span class="pill">IIS</span><span class="pill">Postman</span><span class="pill">Debugging</span><span class="pill">SQL</span><span class="pill">PowerShell</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="section-eyebrow">What I've built</p>
+      <h2 class="section-heading">Projects</h2>
+    </div>
+    <div class="projects-grid">
+
+      <!-- CHANGED: added Elasticsearch + Kibana pills, second link, proj-links wrapper -->
+      <div class="proj-card wide reveal" onmousemove="glow(event,this)">
+        <div class="proj-type intern"><span class="proj-type-dot"></span>Backend / API Project</div>
+        <div class="proj-title">Multi-Service Secure API System</div>
+        <div class="proj-desc">
+          Designed and built a multi-layer backend system simulating real enterprise architecture. The system includes Gateway, Security API, Core API, and Audit Service, with full request/response tracking using a shared Transaction ID. Implemented JWT authentication, centralized audit logging (REQ/RES), role-based access control, and SQL Server integration.
+          <br><br>
+          Handled the full request lifecycle: Client → Gateway → Security → Core → DB with centralized audit logging. Integrated Elasticsearch and Kibana for real-time observability — indexing every API transaction into a structured ECS-aligned schema, enabling live KQL queries, service traffic dashboards, and endpoint heatmaps.
+        </div>
+        <div class="proj-stack">
+          <span class="pill">Node.js</span><span class="pill">Express</span><span class="pill">SQL Server</span>
+          <span class="pill">JWT</span><span class="pill">bcrypt</span><span class="pill">REST APIs</span>
+          <span class="pill">Postman</span><span class="pill">Elasticsearch</span><span class="pill">Kibana</span>
+        </div>
+        <div class="proj-links">
+          <a href="https://drive.google.com/file/d/1KSpjyzq8dt5_S9JvQXn5oXOfTeKmJ3mn/view?usp=sharing" class="proj-link" target="_blank">Project Documentation →</a>
+          <a href="https://docs.google.com/document/d/1bEqvKfkaWOdoKup9OtXJkcw5oHSze70k/edit?usp=sharing&ouid=113903620356691673296&rtpof=true&sd=true" class="proj-link-pill" target="_blank">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M3 7.5h7M3 5.5h7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Elastic Observability Writeup →
+          </a>
+        </div>
+      </div>
+
+      <div class="proj-card reveal" onmousemove="glow(event,this)">
+        <div class="proj-type uni"><span class="proj-type-dot"></span>Compiler Project</div>
+        <div class="proj-title">MICRO Compiler (ANTLR)</div>
+        <div class="proj-desc">
+          Developed a compiler translating MICRO language into Tiny assembly using ANTLR. Implemented symbol table generation, intermediate representation (IR), and three-address code translation using Java and the visitor pattern.
+        </div>
+        <div class="proj-stack">
+          <span class="pill">Java</span><span class="pill">ANTLR</span><span class="pill">Compiler Design</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="proj-link">View Code →</a>
+        </div>
+      </div>
+
+      <div class="proj-card reveal" onmousemove="glow(event,this)">
+        <div class="proj-type uni"><span class="proj-type-dot"></span>FPGA / Architecture</div>
+        <div class="proj-title">Out-of-Order MIPS CPU</div>
+        <div class="proj-desc">
+          Designed a pipelined to superscalar and out-of-order MIPS processor with register renaming, hazard handling, and instruction scheduling. Verified behavior through simulation and FPGA implementation.
+        </div>
+        <div class="proj-stack">
+          <span class="pill">FPGA</span><span class="pill">Processor Design</span><span class="pill">System Architecture</span><span class="pill">Python</span>
+        </div>
+        <div class="proj-links">
+          <a   <div class="proj-links">
+          <a href="https://drive.google.com/file/d/1OzDxNrt_wbEpVRgb0ES9skRFE7DuydTz/view?usp=sharing" class="proj-link" target="_blank">Project Details →</a></a>
+        </div>
+      </div>
+
+      <div class="proj-card reveal" onmousemove="glow(event,this)">
+        <div class="proj-type uni"><span class="proj-type-dot"></span>Networking Project</div>
+        <div class="proj-title">Medical Consultation Platform</div>
+        <div class="proj-desc">
+          Developed a multi-client medical consultation system using TCP socket programming. Implemented doctor login/registration, patient ticket submission, ticket routing, queue management, and a multithreaded server.
+        </div>
+        <div class="proj-stack">
+          <span class="pill">Java</span><span class="pill">TCP Sockets</span><span class="pill">Multithreading</span><span class="pill">Synchronization</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="proj-link">View Code →</a>
+        </div>
+      </div>
+
+      <div class="proj-card reveal" onmousemove="glow(event,this)">
+        <div class="proj-type uni"><span class="proj-type-dot"></span>Embedded Systems</div>
+        <div class="proj-title">SUMO Robots</div>
+        <div class="proj-desc">
+          Programmed autonomous robot control logic using sensors and motor drivers. Developed detection, decision-making, and movement algorithms, reaching Top 8 in a national robotics competition.
+        </div>
+        <div class="proj-stack">
+          <span class="pill">C++</span><span class="pill">Arduino</span><span class="pill">ESP32</span><span class="pill">Control Logic</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="proj-link">Project Details →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-inner">
+      <div class="about-text reveal">
+        <p class="section-eyebrow">A bit about me</p>
+        <h2 class="section-heading" style="margin-bottom:1.4rem">Beyond the code</h2>
+        <p>I'm a Computer Engineering student focused on backend systems, APIs, and system design. I enjoy building real systems where services communicate, fail, and recover — not just writing isolated code.</p>
+        <p>My recent work includes designing a complete multi-service backend system with authentication, audit logging, and request tracing — similar to production environments.</p>
+        <p>Currently preparing for backend and API management roles, with strong interest in API gateways, middleware systems, and distributed architectures.</p>
+      </div>
+      <div class="about-facts reveal">
+        <div class="fact">
+          <div class="fact-icon">🎓</div>
+          <div>
+            <div class="fact-label">Degree</div>
+            <div class="fact-val">B.Sc. Computer Engineering, June 2026</div>
+          </div>
+        </div>
+        <div class="fact">
+          <div class="fact-icon">📍</div>
+          <div>
+            <div class="fact-label">Location</div>
+            <div class="fact-val">Amman, Jordan</div>
+          </div>
+        </div>
+        <div class="fact">
+          <div class="fact-icon">🌐</div>
+          <div>
+            <div class="fact-label">Languages</div>
+            <div class="fact-val">Arabic (Native) · English (Excellent)</div>
+          </div>
+        </div>
+        <div class="fact">
+          <div class="fact-icon">⚡</div>
+          <div>
+            <div class="fact-label">Looking for</div>
+            <div class="fact-val">Backend / API / Systems Role</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box reveal">
+      <h2 class="contact-title">Let's <span class="hi">connect</span>,<br>shall we?</h2>
+      <p class="contact-sub">I'm interested in backend, API, and systems engineering opportunities. If you're building reliable services or API platforms, I'd be happy to connect.</p>
+      <div class="contact-links">
+        <a href="mailto:ali.alreyahi@hotmail.com" class="btn-solid">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="3" width="13" height="9" rx="1.5" stroke="#060610" stroke-width="1.5"/><path d="M1 4.5l6.5 4.5L14 4.5" stroke="#060610" stroke-width="1.5" stroke-linecap="round"/></svg>
+          ali.alreyahi@hotmail.com
+        </a>
+        <a href="https://linkedin.com/in/ali-alreyahi" class="btn-outline" target="_blank">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="13" height="13" rx="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M4 6v5M4 4.2v.2M6.5 11V8.5a2 2 0 014 0V11M6.5 8v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>Ali Alreyahi · Backend & API Engineer · 2026</span>
+  <div class="footer-right">
+    <a href="mailto:ali.alreyahi@hotmail.com">Email</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">GitHub</a>
+  </div>
+</footer>
+
+<script>
+/* ── CANVAS ── */
+(()=>{
+  const c=document.getElementById('bg-canvas');
+  const ctx=c.getContext('2d');
+  let W,H,stars=[];
+  const resize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};
+  resize();addEventListener('resize',resize);
+  const init=()=>{stars=[];for(let i=0;i<140;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,a:Math.random(),da:(Math.random()-.5)*.004})};
+  init();
+  const rays=[
+    {cx:.52,cy:-.05,a:.3,spread:.2,col:'110,200,255',op:.055,len:1.5},
+    {cx:.42,cy:-.05,a:-.25,spread:.15,col:'120,100,250',op:.045,len:1.4},
+    {cx:.65,cy:-.02,a:.55,spread:.12,col:'100,220,200',op:.03,len:1.3},
+  ];
+  const drawRay=(r)=>{
+    const cx=W*r.cx,cy=H*r.cy,len=Math.max(W,H)*r.len;
+    const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,len);
+    grd.addColorStop(0,`rgba(${r.col},${r.op})`);grd.addColorStop(.5,`rgba(${r.col},${r.op*.4})`);grd.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(r.a+Math.PI/2);
+    ctx.beginPath();ctx.moveTo(0,0);
+    const h=Math.tan(r.spread/2)*len;ctx.lineTo(-h,len);ctx.lineTo(h,len);ctx.closePath();
+    ctx.fillStyle=grd;ctx.fill();ctx.restore();
+  };
+  const draw=()=>{
+    ctx.clearRect(0,0,W,H);
+    const bg=ctx.createRadialGradient(W*.5,H*.05,0,W*.5,H*.4,H);
+    bg.addColorStop(0,'#0c0e20');bg.addColorStop(1,'#060610');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    rays.forEach(drawRay);
+    stars.forEach(s=>{
+      s.a+=s.da;if(s.a<0||s.a>1)s.da*=-1;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(180,190,255,${s.a*.7+.15})`;ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  };
+  draw();
+})();
+
+/* ── NAV scroll ── */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>50));
+
+/* ── REVEAL ── */
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ── GLOW ── */
+function glow(e,card){
+  const r=card.getBoundingClientRect();
+  card.style.setProperty('--mx',`${e.clientX-r.left}px`);
+  card.style.setProperty('--my',`${e.clientY-r.top}px`);
+}
+</script>
+</body>
+</html>
