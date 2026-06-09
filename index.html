@@ -459,10 +459,10 @@ footer{
         <div class="tl-role">Backend & Systems Intern</div>
         <div class="tl-company">Orange Jordan — Digital Operations</div>
         <div class="tl-desc">
-          Worked on backend and system-level tasks in an enterprise environment. Performed Linux operations, IIS hosting setup, API testing using Postman, system debugging, scripting, and database-related tasks. Gained hands-on exposure to real infrastructure, middleware concepts, and service-based architectures.
+          Completed engineering training in the Digital Operations team, supporting enterprise backend systems, servers, databases, and internal digital services. Monitored systems and services to detect failures and performance issues, tested APIs with Postman, explored IIS and server management, and troubleshot networking and system-level problems. Studied API management and gateway concepts, JWT-based authentication, and logging and monitoring with the Elastic Stack (ELK) — bridging university coursework with real production practices.
         </div>
         <div class="tl-tags">
-          <span class="pill">Linux</span><span class="pill">IIS</span><span class="pill">Postman</span><span class="pill">Debugging</span><span class="pill">SQL</span><span class="pill">PowerShell</span>
+          <span class="pill">Linux</span><span class="pill">IIS</span><span class="pill">Postman</span><span class="pill">API Management</span><span class="pill">JWT</span><span class="pill">Elastic Stack</span><span class="pill">Monitoring</span><span class="pill">SQL</span>
         </div>
       </div>
     </div>
@@ -477,6 +477,24 @@ footer{
       <h2 class="section-heading">Projects</h2>
     </div>
     <div class="projects-grid">
+
+      <div class="proj-card wide reveal" onmousemove="glow(event,this)">
+        <div class="proj-type uni"><span class="proj-type-dot"></span>Graduation Project</div>
+        <div class="proj-title">SmartTour — AI Travel Planner</div>
+        <div class="proj-desc">
+          A cross-platform mobile app that automates end-to-end trip planning. SmartTour turns the user's inputs — destination, dates, budget, and interests — into a full day-by-day itinerary through an AI pipeline built on Google Gemini 2.5 Flash, integrating the Google Maps & Places APIs, the Booking.com API via RapidAPI for flights and hotels, and Priceline for rental cars.
+          <br><br>
+          Built with Flutter on the frontend and Supabase on the backend (PostgreSQL, Auth, Storage, and Deno Edge Functions running the async AI generation pipeline). A budget engine keeps every plan within the user's limit by combining real flight and hotel prices with AI-estimated activity costs, and a Gemini review step scores each itinerary 0–100 for fit (85–100 across all test cases). SmartTour also works as a social platform — users share, like, comment on, save, and follow trips, and get help from a Gemini-powered chat assistant.
+        </div>
+        <div class="proj-stack">
+          <span class="pill">Flutter</span><span class="pill">Dart</span><span class="pill">Supabase</span>
+          <span class="pill">PostgreSQL</span><span class="pill">Deno / TypeScript</span><span class="pill">Edge Functions</span>
+          <span class="pill">Gemini 2.5 Flash</span><span class="pill">RapidAPI</span><span class="pill">Google Places</span>
+        </div>
+        <div class="proj-links">
+          <a href="https://docs.google.com/document/d/1KmPMzY20fN6WXgpZxSxE04qkKWnXew2q/edit?usp=share_link&ouid=113903620356691673296&rtpof=true&sd=true" class="proj-link" target="_blank">Project Documentation →</a>
+        </div>
+      </div>
 
       <!-- CHANGED: added Elasticsearch + Kibana pills, second link, proj-links wrapper -->
       <div class="proj-card wide reveal" onmousemove="glow(event,this)">
@@ -510,9 +528,6 @@ footer{
         <div class="proj-stack">
           <span class="pill">Java</span><span class="pill">ANTLR</span><span class="pill">Compiler Design</span>
         </div>
-        <div class="proj-links">
-          <a href="#" class="proj-link">View Code →</a>
-        </div>
       </div>
 
       <div class="proj-card reveal" onmousemove="glow(event,this)">
@@ -525,8 +540,7 @@ footer{
           <span class="pill">FPGA</span><span class="pill">Processor Design</span><span class="pill">System Architecture</span><span class="pill">Python</span>
         </div>
         <div class="proj-links">
-          <a   <div class="proj-links">
-          <a href="https://drive.google.com/file/d/1OzDxNrt_wbEpVRgb0ES9skRFE7DuydTz/view?usp=sharing" class="proj-link" target="_blank">Project Details →</a></a>
+          <a href="https://drive.google.com/file/d/1OzDxNrt_wbEpVRgb0ES9skRFE7DuydTz/view?usp=sharing" class="proj-link" target="_blank">Project Details →</a>
         </div>
       </div>
 
@@ -539,9 +553,6 @@ footer{
         <div class="proj-stack">
           <span class="pill">Java</span><span class="pill">TCP Sockets</span><span class="pill">Multithreading</span><span class="pill">Synchronization</span>
         </div>
-        <div class="proj-links">
-          <a href="#" class="proj-link">View Code →</a>
-        </div>
       </div>
 
       <div class="proj-card reveal" onmousemove="glow(event,this)">
@@ -552,9 +563,6 @@ footer{
         </div>
         <div class="proj-stack">
           <span class="pill">C++</span><span class="pill">Arduino</span><span class="pill">ESP32</span><span class="pill">Control Logic</span>
-        </div>
-        <div class="proj-links">
-          <a href="#" class="proj-link">Project Details →</a>
         </div>
       </div>
 
